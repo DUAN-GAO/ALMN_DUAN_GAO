@@ -1,0 +1,26 @@
+<annotation>
+	<folder>train_data</folder>
+	<filename>malignant (112).png</filename>
+	<path>C:/Users/Administrator/Desktop/work/cancer_multimodal/多模态癌症/github/Metastasis/ALNM_pCR-main/train_data/malignant (112).png</path>
+	<source>
+		<database>Unknown</database>
+	</source>
+	<size>
+		<width>640</width>
+		<height>640</height>
+		<depth>1</depth>
+	</size>
+	<segmented>0</segmented>
+	<object>
+		<name>cancer</name>
+		<pose>Unspecified</pose>
+		<truncated>0</truncated>
+		<difficult>0</difficult>
+		<bndbox>
+			<xmin>258</xmin>
+			<ymin>66</ymin>
+			<xmax>436</xmax>
+			<ymax>233</ymax>
+		</bndbox>
+	</object>
+</annotation>

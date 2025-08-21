@@ -1,0 +1,11 @@
+train: /train_data
+val: /val_data
+
+nc: 1
+names: ['tumor']
+
+hsv_h: 0.0  # 超声波图像颜色信息不重要，可以降低色调变化
+hsv_s: 0.0  # 降低饱和度变化
+hsv_v: 0.4  # 重点增强明度/对比度，这对超声波图像很关键
+degrees: 180.0 # 超声波图像方向多变，允许大角度旋转
+fliplr: 0.5
