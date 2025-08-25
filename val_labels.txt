@@ -1,0 +1,10 @@
+benign (164).png 1
+benign (178).png 0
+malignant (103).png 0
+malignant (106).png 0
+malignant (110).png 1
+malignant (112).png 1
+malignant (117).png 1
+malignant (125).png 0
+malignant (131).png 1
+malignant (149).png 1
