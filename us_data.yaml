@@ -1,5 +1,5 @@
-train: /train_data
-val: /val_data
+train: ./train_data
+val: ./val_data
 
 nc: 1
 names: ['tumor']
