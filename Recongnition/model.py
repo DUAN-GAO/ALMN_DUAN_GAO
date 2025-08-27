@@ -15,10 +15,9 @@ class PMG(nn.Module):
 
         self.classifier_concat = nn.Sequential(
             # nn.BatchNorm1d(1024 * 3),
-            nn.Linear(1024 * 3, feature_size),
-            # nn.BatchNorm1d(feature_size),
-            nn.ELU(inplace=True),
-            nn.Linear(feature_size, classes_num),
+            nn.Linear(2048, 512),
+            nn.ReLU(),
+            nn.Linear(512, classes_num)
         )
 
         self.conv_block1 = nn.Sequential(
