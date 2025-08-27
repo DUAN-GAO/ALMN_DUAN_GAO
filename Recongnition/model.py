@@ -61,28 +61,9 @@ class PMG(nn.Module):
 
     def forward(self, x):
         print(self.features(x))
-        xf1, xf2, xf3, xf4, xf5 = self.features(x)
-
-        xl1 = self.conv_block1(xf3)
-        xl2 = self.conv_block2(xf4)
-        xl3 = self.conv_block3(xf5)
-        
-        xl1 = self.max1(xl1)
-        xl1 = xl1.view(xl1.size(0), -1)
-
-        xc1 = self.classifier1(xl1)
-
-        xl2 = self.max2(xl2)
-        xl2 = xl2.view(xl2.size(0), -1)
-        xc2 = self.classifier2(xl2)
-
-        xl3 = self.max3(xl3)
-        xl3 = xl3.view(xl3.size(0), -1)
-        xc3 = self.classifier3(xl3)
-          
-        x_concat = torch.cat((xl1, xl2, xl3), -1)
-        x_concat = self.classifier_concat(x_concat)
-        return xc1, xc2, xc3, x_concat
+        img_feat = self.features(x)  # [batch, feature_dim]
+        out = self.classifier_concat(img_feat)
+        return out
     
     
 class BasicConv(nn.Module):
