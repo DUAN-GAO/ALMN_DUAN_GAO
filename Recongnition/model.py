@@ -60,6 +60,7 @@ class PMG(nn.Module):
 
 
     def forward(self, x):
+        print(self.features(x))
         xf1, xf2, xf3, xf4, xf5 = self.features(x)
 
         xl1 = self.conv_block1(xf3)
