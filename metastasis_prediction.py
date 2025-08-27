@@ -157,6 +157,7 @@ optimizer = torch.optim.Adam(model.parameters(), lr=1e-4)
 # Training loop for PMG + clinical features
 # ================================
 num_epochs = 20
+print("metastasis training started...")
 for epoch in range(num_epochs):
     model.train()
     total_loss = 0
@@ -171,7 +172,7 @@ for epoch in range(num_epochs):
         total_loss += loss.item()
     print("[Epoch {}/{}] Training Loss: {:.4f}".format(epoch+1, num_epochs, total_loss/len(train_loader)))
 
-
+    print("metastasis testing started...")
     # Validation
     model.eval()
     correct, total = 0, 0
