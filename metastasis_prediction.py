@@ -29,7 +29,7 @@ class PMGWithClinical(nn.Module):
         )
 
     def forward(self, x, clinical_data):
-        _, _, _, img_feat = self.pmg(x)
+        img_feat = self.pmg(x)
         clinical_feat = self.clinical_fc(clinical_data)
         fused = torch.cat([img_feat, clinical_feat], dim=1)
         out = self.classifier(fused)
