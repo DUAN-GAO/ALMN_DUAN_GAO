@@ -9,46 +9,61 @@ import cv2
 import json
 import timm
 
-# ================================
-# PMG model with clinical feature fusion
-# ================================
+import torch
+import torch.nn as nn
+
 class PMGWithClinical(nn.Module):
     def __init__(self, pmg_backbone, clinical_size=5, num_classes=2, sample_input=(1,3,224,224)):
+        """
+        PMG + Clinical Features
+
+        Args:
+            pmg_backbone: PMG model, returns image feature tensor
+            clinical_size: number of clinical features
+            num_classes: number of classes
+            sample_input: sample input tensor shape to compute PMG output feature size
+        """
         super(PMGWithClinical, self).__init__()
         self.pmg = pmg_backbone
 
-        # 临床特征网络
+        # 自动计算 PMG 输出特征维度
+        with torch.no_grad():
+            dummy_input = torch.randn(sample_input)
+            img_feat = self.pmg(dummy_input)
+            if isinstance(img_feat, tuple) or isinstance(img_feat, list):
+                img_feat = img_feat[-1]  # 取最后输出特征
+            self.img_feature_dim = img_feat.view(img_feat.size(0), -1).shape[1]
+
+        # 临床特征全连接
         self.clinical_fc = nn.Sequential(
             nn.Linear(clinical_size, 64),
             nn.ReLU(),
             nn.Dropout(0.2)
         )
 
-        # 动态获取 PMG 输出特征维度
-        with torch.no_grad():
-            dummy_input = torch.zeros(sample_input)
-            pmg_out = self.pmg(dummy_input)
-            if isinstance(pmg_out, tuple) or isinstance(pmg_out, list):
-                # 如果 PMG 返回多个特征，取最后一个
-                pmg_out = pmg_out[-1]
-            self.pmg_out_dim = pmg_out.shape[1]  # [batch, feature_dim]
-
-        # 分类器
+        # 融合特征分类器
         self.classifier = nn.Sequential(
-            nn.Linear(self.pmg_out_dim + 64, 256),
+            nn.Linear(self.img_feature_dim + 64, 256),
             nn.ReLU(),
             nn.Dropout(0.5),
             nn.Linear(256, num_classes)
         )
 
     def forward(self, x, clinical_data):
+        """
+        x: [B, C, H, W] image tensor
+        clinical_data: [B, clinical_size] tensor
+        """
         img_feat = self.pmg(x)
         if isinstance(img_feat, tuple) or isinstance(img_feat, list):
-            img_feat = img_feat[-1]  # 取最后一层特征
+            img_feat = img_feat[-1]
+        img_feat = img_feat.view(img_feat.size(0), -1)  # flatten
+
         clinical_feat = self.clinical_fc(clinical_data)
         fused = torch.cat([img_feat, clinical_feat], dim=1)
         out = self.classifier(fused)
         return out
+
 
 
 # ================================
