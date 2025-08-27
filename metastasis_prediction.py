@@ -146,7 +146,7 @@ val_loader = DataLoader(val_dataset, batch_size=16, shuffle=False, num_workers=2
 # ================================
 backbone = timm.create_model('resnet50', pretrained=True, num_classes=0)
 pmg = PMG(backbone, feature_size=512, classes_num=2)
-model = PMGWithClinical(pmg_backbone=pmg, feature_size=512, clinical_size=5, num_classes=2)
+model = PMGWithClinical(pmg_backbone=pmg, clinical_size=5, num_classes=2)
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 model = model.to(device)
 
