@@ -80,7 +80,7 @@ class CancerPatchClinicalDataset(Dataset):
             img_tensor = torch.from_numpy(img.transpose(2, 0, 1)).float() / 255.0  # C,H,W normalized to [0,1]
 
         # Load clinical features
-        clinical_feat = torch.tensor(list(map(float, self.clinical_dict[img_name])), dtype=torch.float32)
+        clinical_feat = torch.tensor(list(map(float, self.clinical_dict[os.path.splitext(img_name)[0]])), dtype=torch.float32)
 
         return img_tensor, clinical_feat, label
 
