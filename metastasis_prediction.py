@@ -54,7 +54,7 @@ class CancerPatchClinicalDataset(Dataset):
         self.samples = []
         with open(label_file, "r") as f:
             for line in f:
-                img_name, label = line.strip().split()
+                img_name, label = line.strip().rsplit(maxsplit=1)
                 self.samples.append((img_name, int(label)))
 
         # Load clinical features
