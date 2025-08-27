@@ -59,7 +59,6 @@ class PMG(nn.Module):
 
 
     def forward(self, x):
-        print(self.features(x))
         img_feat = self.features(x)  # [batch, feature_dim]
         out = self.classifier_concat(img_feat)
         return out
